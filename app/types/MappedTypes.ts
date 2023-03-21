@@ -1,58 +1,53 @@
-const MappedTypes = () => {
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const mappedTypes = () => {
+  type WrongType = {
+    count: string;
+    fontSize: boolean;
+  };
+
   type OptionsFlags<Type> = {
     [Property in keyof Type]: number;
   };
 
-  type FeatureFlags = {
-    darkMode: () => void;
-    newUserProfile: () => void;
-  };
-
-  type FeatureOptions = OptionsFlags<FeatureFlags>;
+  type FeatureOptions = OptionsFlags<WrongType>;
 
   //can create new type using template literal
+  interface Person {
+    name: string;
+    location: string;
+  }
+
   type Getters<Type> = {
     [Property in keyof Type as `get${Capitalize<
       string & Property
     >}`]: () => Type[Property];
   };
 
-  interface Person {
-    name: string;
-    age: number;
-    location: string;
-  }
-
   type LazyPerson = Getters<Person>;
 
+  //can exclude any Property from type
   type RemoveKindField<Type> = {
-    [Property in keyof Type as Exclude<Property, 'kind'>]: Type[Property]; //Remove the 'kind' property
+    [Property in keyof Type as Exclude<Property, 'type'>]: Type[Property]; //Remove the 'type' property
   };
 
+  // type A = Exclude<'lal' | 'bal' | 'pal' | 'tal', 'tal'>;
+
   interface Circle {
-    kind: 'circle';
+    type: 'circle';
     radius: number;
   }
 
   type KindlessCircle = RemoveKindField<Circle>;
 
-  type EventConfig<Events extends { kind: string }> = {
-    [E in Events as E['kind']]: (event: E) => void;
+  //pass with union type
+  type EventConfig<Events extends { type: string }> = {
+    [E in Events as E['type']]: (event: E) => void;
   };
 
-  type SquareEvent = { kind: 'square'; x: number; y: number };
-  type CircleEvent = { kind: 'circle'; radius: number };
-
-  type Config = EventConfig<SquareEvent | CircleEvent>;
-
-  type EventConfig<Events extends { kind: string }> = {
-    [E in Events as E['kind']]: (event: E) => void;
-  };
-
-  type SquareEvent = { kind: 'square'; x: number; y: number };
-  type CircleEvent = { kind: 'circle'; radius: number };
+  type SquareEvent = { type: 'square'; x: number; y: number };
+  type CircleEvent = { type: 'circle'; radius: number };
 
   type Config = EventConfig<SquareEvent | CircleEvent>;
 };
 
-export default MappedTypes;
+export default mappedTypes;

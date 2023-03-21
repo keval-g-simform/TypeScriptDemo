@@ -1,41 +1,38 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const ConditionalTypes = () => {
+  type IsString<T> = T extends string ? true : false;
+
+  type I0 = IsString<number>;
+  type I1 = IsString<'abc'>;
+
+  //with interface
   interface Animal {
-    live(): void;
+    live: () => void;
   }
-  interface Dog extends Animal {
-    woof(): void;
+  interface Dog {
+    woof: () => void;
+    live: () => void;
   }
 
   type Example1 = Dog extends Animal ? number : string;
-
   type Example2 = RegExp extends Animal ? number : string;
 
-  type ExtractIdType<T extends { id: string | number }> = T['id'];
-
-  interface NumericId {
-    id: number;
-  }
-
-  interface StringId {
-    id: string;
-  }
-
-  interface BooleanId {
-    id: boolean;
-  }
-
-  type NumericIdType = ExtractIdType<NumericId>; // type NumericIdType = number
-  type StringIdType = ExtractIdType<StringId>; // type StringIdType = string
-  type BooleanIdType = ExtractIdType<BooleanId>; // won't work
-
   //### Distributive over union types​: ###
-  type ToStringArray<T> = T extends string ? T[] : never; ////To avoid it add [] to the type in condition
-
+  type ToStringArray<T> = T extends string ? T[] : any;
   type StringArray = ToStringArray<string | number>;
 
+  // type StringArray = ToStringArray<string> | ToStringArray<number>
+  // type StringArray = (string extends string ? string[] : never) | (number extends string ? number[] : never)
+  // type StringArray = string[] | never
+
+  type WrappedWithArray<T> = T[] extends string[] ? T[] : never;
+  type NotDistributive = WrappedWithArray<string | number>;
+
+  // with conditional expression
   interface IdLabel {
     id: number;
   }
+
   interface NameLabel {
     name: string;
   }
@@ -52,14 +49,7 @@ const ConditionalTypes = () => {
 
   let b = userInfo(1857);
 
-  let c = userInfo(Math.random() ? 'Rajguru' : 1931);
-
-  //### Inferring Within Conditional Types: ###
-  type Flatten<Type> = Type extends Array<infer Item> ? Item : Type;
-
-  type Str = Flatten<string[]>;
-
-  type Num = Flatten<number>;
+  let c = userInfo(Math.random() ? 4 : 1931);
 };
 
 export default ConditionalTypes;

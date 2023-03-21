@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const IndexedTypes = () => {
   //### Access an object type's property: ###
   type Bird = {
@@ -6,30 +7,26 @@ const IndexedTypes = () => {
     isHungry: boolean;
   };
 
-  type Hungry = Bird['isHungry' | 'name']; // type Hungry = boolean
+  type Hungry = Bird['isHungry']; // type Hungry = boolean
   const isBirdHungry: Hungry = true;
 
   // The index can be a type, not just a literal:
   const key = 'age';
-  type AgeWithKey = Bird[key]; //can't pass variable
+  type AgeWithKey = Bird[key]; // can't pass variable
   type AgeProp = 'age';
   type Age = Bird[AgeProp]; // type Age = number
-  const BirdAge: Age = 3;
+  const birdAge: Age = 3;
 
-  //###Access an array type's element: ###
-  //by getting the type at the array's indices (which are numbers
+  // ### Access an array type's element: ###
+  //by getting the type at the array's indices (which are numbers)
   type UserListType = { name: string; age: number }[];
 
   type User = UserListType[number];
   type Username = UserListType[number]['name'];
 
-  const user: User = { name: 'The one and only', age: 25 };
-  const username: Username = 'The one and only';
-
   type BirdNames = Array<string>;
 
   type BirdName = BirdNames[number]; // type BirdName = string
-  const myBirdsName: BirdName = 'Sparrow';
 
   // ### Access a tuple type's elements: ####
   type TupleExample = [string, number];
@@ -53,16 +50,15 @@ const IndexedTypes = () => {
   type Check = BirdType['hungry' | 'personality'];
   const isFriendly: Friendly = true;
 
-  return {
-    isBirdHungry,
-    BirdAge,
-    user,
-    username,
-    myBirdsName,
-    name,
-    age,
-    wrong,
-    isFriendly,
-  };
+  //with function
+  function getProperty<T, K extends keyof T>(obj: T, objKey: K) {
+    return obj[objKey];
+  }
+
+  let userData = { name: 'John Doe', age: 25 };
+  let username = getProperty(userData, 'name'); // string
+  let userAge = getProperty(userData, 'age'); // number
+  let nonexistentProperty = getProperty(userData, 'nonexistentProperty'); // Error
 };
+
 export default IndexedTypes;

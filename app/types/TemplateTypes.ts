@@ -1,32 +1,34 @@
-type World = 'world';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const templateTypes = () => {
+  type World = 'world';
+  type Greeting = `hello ${World}`;
+  let greeting: Greeting = 'hello world';
 
-type Greeting = `hello ${World}`;
+  type EmailAddress = `${string}@${string}.${string}`;
+  const myEmailAddress: EmailAddress = 'john.doe@example.com';
 
-type EmailLocaleIDs = 'welcome_email' | 'email_heading';
-type FooterLocaleIDs = 'footer_title' | 'footer_sendoff';
+  // Interpolated position, it create type by one to one mapping
+  type HorizontalPosition = 'left' | 'center' | 'right';
+  type VerticalPosition = 'top' | 'center' | 'bottom';
+  type Positions = `${HorizontalPosition}-${VerticalPosition}`;
 
-type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
+  type ToastPropTypes = {
+    position: 'center' | Exclude<Positions, 'center-center'>;
+  };
 
-// It can be use with string, number, bigint, boolean, null, undefined (not with array and object)​
-type Numbers = 1 | 2 | 3 | 4 | [1];
-type NumberGreeting = `hello ${Numbers}`;
+  // It can be use with string, number, bigint, boolean, null, undefined (not with array and object)​
+  type Numbers = 1 | 2 | 3 | 4 | [1];
+  type NumberGreeting = `hello ${Numbers}`;
 
-//with built-in string manipulation types
-type MessageType = 'error' | 'notification' | 'request';
-type MessageId = `${Uppercase<MessageType>}_ID`;
+  //with built-in string manipulation types
+  type MessageType = 'error' | 'notification' | 'request';
+  type MessageId = `${Uppercase<MessageType>}_ID`;
 
-type MessageName = `${Capitalize<MessageType>}`;
+  type MessageName = `${Capitalize<MessageType>}`;
 
-type MessageIdLower = `${Lowercase<MessageId>}`;
+  type MessageIdLower = `${Lowercase<MessageId>}`;
 
-type MessageIdCapitalized = `${Capitalize<MessageIdLower>}`;
-
-//Example
-type HorizontalPosition = 'left' | 'center' | 'right';
-type VerticalPosition = 'top' | 'center' | 'bottom';
-
-type ToastPropTypes = {
-  position:
-    | 'center'
-    | Exclude<`${HorizontalPosition}-${VerticalPosition}`, 'center-center'>;
+  type MessageIdCapitalized = `${Capitalize<MessageIdLower>}`;
 };
+
+export default templateTypes;
