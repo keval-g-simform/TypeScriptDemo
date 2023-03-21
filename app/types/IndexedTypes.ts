@@ -50,6 +50,7 @@ const IndexedTypes = () => {
   };
 
   type Friendly = BirdType['personality']['friendly']; // type Friendly = boolean
+  type Check = BirdType['hungry' | 'personality'];
   const isFriendly: Friendly = true;
 
   return {
